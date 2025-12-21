@@ -9,20 +9,22 @@ export enum ModuleType {
   BACKEND_LOGIC = 'BACKEND_LOGIC',
   ANALYTICS = 'ANALYTICS',
   CONTACT_CREATOR = 'CONTACT_CREATOR',
-  ANTI_PLAGIARISM = 'ANTI_PLAGIARISM',
-  RESOURCE_MANAGEMENT = 'RESOURCE_MANAGEMENT'
-}
-
-export type Role = 'user' | 'admin';
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: Role;
+  ANTI_PLAGIARISM = 'ANTI_PLAGIARISM'
 }
 
 export type Language = 'uz' | 'ru' | 'en';
+
+export interface ArticleStats {
+  wordCount: number;
+  readingTime: number; // in minutes
+  complexity: string;
+  academicTermDensity: number; // 0-100
+  topKeywords: { word: string; count: number }[];
+  topCitedSources: { name: string; count: number }[];
+  imradDistribution: { section: string; percentage: number }[];
+  readabilityScore: number; // 0-100
+  aiSummary: string;
+}
 
 export interface IMRaDResult {
   section: string;

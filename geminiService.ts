@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { IMRaDResult, GrammarFix, PlagiarismResult, Language, DOIMetadata } from "./types";
+import { IMRaDResult, GrammarFix, PlagiarismResult, Language, DOIMetadata, ArticleStats } from "./types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -10,7 +10,62 @@ const getLangPrompt = (lang: Language) => {
   return "Javobingni faqat O'ZBEK tilida yoz.";
 };
 
-// Fix: analyzeIMRaD function to handle academic text structure analysis
+export const getArticleAnalytics = async (text: string, lang: Language): Promise<ArticleStats> => {
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-flash-preview',
+    contents: `Extract deep statistics and analytics for this academic article. 
+    Analyze the IMRaD structure, find top keywords, and identify the most significant cited authors/papers mentioned in the text.
+    ${getLangPrompt(lang)}
+    Text: ${text.substring(0, 8000)}`,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          wordCount: { type: Type.NUMBER },
+          readingTime: { type: Type.NUMBER },
+          complexity: { type: Type.STRING },
+          academicTermDensity: { type: Type.NUMBER },
+          readabilityScore: { type: Type.NUMBER },
+          aiSummary: { type: Type.STRING },
+          topKeywords: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                word: { type: Type.STRING },
+                count: { type: Type.NUMBER }
+              }
+            }
+          },
+          topCitedSources: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                name: { type: Type.STRING, description: "Author name or paper title found in text" },
+                count: { type: Type.NUMBER, description: "Frequency or significance weight" }
+              }
+            }
+          },
+          imradDistribution: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                section: { type: Type.STRING },
+                percentage: { type: Type.NUMBER }
+              }
+            }
+          }
+        },
+        required: ["wordCount", "readingTime", "complexity", "academicTermDensity", "topKeywords", "topCitedSources", "imradDistribution", "readabilityScore", "aiSummary"]
+      }
+    }
+  });
+  return JSON.parse(response.text || '{}');
+};
+
 export const analyzeIMRaD = async (text: string, lang: Language): Promise<IMRaDResult[]> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
@@ -37,7 +92,6 @@ export const analyzeIMRaD = async (text: string, lang: Language): Promise<IMRaDR
   return JSON.parse(response.text || '[]');
 };
 
-// Fix: monitorGrammar function to handle style and grammar monitoring
 export const monitorGrammar = async (text: string, lang: Language): Promise<GrammarFix[]> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
@@ -64,7 +118,6 @@ export const monitorGrammar = async (text: string, lang: Language): Promise<Gram
   return JSON.parse(response.text || '[]');
 };
 
-// Fix: checkPlagiarism function to analyze text originality
 export const checkPlagiarism = async (text: string, lang: Language): Promise<PlagiarismResult> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
@@ -98,7 +151,6 @@ export const checkPlagiarism = async (text: string, lang: Language): Promise<Pla
   return JSON.parse(response.text || '{}');
 };
 
-// Fix: Added missing identifyDOI function for reference identification
 export const identifyDOI = async (query: string): Promise<DOIMetadata> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',

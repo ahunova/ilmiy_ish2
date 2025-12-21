@@ -6,8 +6,8 @@ const ContactCreator: React.FC = () => {
   const [isSent, setIsSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Yangilangan asosiy pochta manzili
-  const TARGET_GMAIL = "tamannosha23@gmail.com"; 
+  // Sizning Gmail manzilingiz
+  const TARGET_GMAIL = "ahunova.tamanno@gmail.com"; 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
