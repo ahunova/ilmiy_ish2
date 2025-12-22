@@ -16,14 +16,23 @@ export type Language = 'uz' | 'ru' | 'en';
 
 export interface ArticleStats {
   wordCount: number;
-  readingTime: number; // in minutes
+  readingTime: number; 
   complexity: string;
-  academicTermDensity: number; // 0-100
+  academicTermDensity: number; 
   topKeywords: { word: string; count: number }[];
   topCitedSources: { name: string; count: number }[];
   imradDistribution: { section: string; percentage: number }[];
-  readabilityScore: number; // 0-100
+  readabilityScore: number; 
   aiSummary: string;
+  // Yangi ilmiy maydonlar
+  problemStatement: string;
+  hypothesis: string;
+  martAnalysis: {
+    logic: number;
+    analytical: number;
+    numerical: number;
+    synthesis: string;
+  };
 }
 
 export interface IMRaDResult {

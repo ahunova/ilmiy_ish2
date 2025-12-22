@@ -5,18 +5,22 @@ import { IMRaDResult, GrammarFix, PlagiarismResult, Language, DOIMetadata, Artic
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const getLangPrompt = (lang: Language) => {
-  if (lang === 'ru') return "Отвечай строго на РУССКОМ языке.";
-  if (lang === 'en') return "Respond strictly in ENGLISH.";
-  return "Javobingni faqat O'ZBEK tilida yoz.";
+  if (lang === 'ru') return "Используй только строгий академический русский язык. Ответ должен быть профессиональным, лаконичным и соответствовать стандартам научного стиля (научный стиль речи).";
+  if (lang === 'en') return "Respond strictly in professional academic ENGLISH.";
+  return "Javobingni faqat O'ZBEK tilida, akademik uslubda yoz.";
 };
 
-export const getArticleAnalytics = async (text: string, lang: Language): Promise<ArticleStats> => {
+export const getArticleAnalytics = async (problem: string, text: string, lang: Language): Promise<ArticleStats> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Extract deep statistics and analytics for this academic article. 
-    Analyze the IMRaD structure, find top keywords, and identify the most significant cited authors/papers mentioned in the text.
-    ${getLangPrompt(lang)}
-    Text: ${text.substring(0, 8000)}`,
+    contents: `As a professional senior academic editor and PhD analyst, evaluate the following research components. 
+    1. Formulate a rigorous scientific hypothesis based on the problem and provided text.
+    2. Perform detailed MART analysis (Logical reasoning, Analytical depth, Numerical validity).
+    3. Extract general lexicographical statistics and key terminology.
+    
+    Research Problem: ${problem}
+    Research Text: ${text.substring(0, 8000)}
+    ${getLangPrompt(lang)}`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -28,6 +32,18 @@ export const getArticleAnalytics = async (text: string, lang: Language): Promise
           academicTermDensity: { type: Type.NUMBER },
           readabilityScore: { type: Type.NUMBER },
           aiSummary: { type: Type.STRING },
+          problemStatement: { type: Type.STRING },
+          hypothesis: { type: Type.STRING },
+          martAnalysis: {
+            type: Type.OBJECT,
+            properties: {
+              logic: { type: Type.NUMBER },
+              analytical: { type: Type.NUMBER },
+              numerical: { type: Type.NUMBER },
+              synthesis: { type: Type.STRING }
+            },
+            required: ["logic", "analytical", "numerical", "synthesis"]
+          },
           topKeywords: {
             type: Type.ARRAY,
             items: {
@@ -43,8 +59,8 @@ export const getArticleAnalytics = async (text: string, lang: Language): Promise
             items: {
               type: Type.OBJECT,
               properties: {
-                name: { type: Type.STRING, description: "Author name or paper title found in text" },
-                count: { type: Type.NUMBER, description: "Frequency or significance weight" }
+                name: { type: Type.STRING },
+                count: { type: Type.NUMBER }
               }
             }
           },
@@ -59,7 +75,7 @@ export const getArticleAnalytics = async (text: string, lang: Language): Promise
             }
           }
         },
-        required: ["wordCount", "readingTime", "complexity", "academicTermDensity", "topKeywords", "topCitedSources", "imradDistribution", "readabilityScore", "aiSummary"]
+        required: ["wordCount", "readingTime", "complexity", "academicTermDensity", "topKeywords", "topCitedSources", "imradDistribution", "readabilityScore", "aiSummary", "problemStatement", "hypothesis", "martAnalysis"]
       }
     }
   });
@@ -69,7 +85,7 @@ export const getArticleAnalytics = async (text: string, lang: Language): Promise
 export const analyzeIMRaD = async (text: string, lang: Language): Promise<IMRaDResult[]> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
-    contents: `Analyze this academic text for IMRaD structure. 
+    contents: `Perform a structural decomposition of this academic text according to IMRaD standards. 
     ${getLangPrompt(lang)}
     Text: ${text.substring(0, 5000)}`,
     config: {
@@ -95,7 +111,8 @@ export const analyzeIMRaD = async (text: string, lang: Language): Promise<IMRaDR
 export const monitorGrammar = async (text: string, lang: Language): Promise<GrammarFix[]> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Act as a professional academic editor. Check this text for grammar and academic style.
+    contents: `Review this text for adherence to formal academic style and grammatical precision. 
+    Focus on eliminating colloquialisms and improving scientific clarity.
     ${getLangPrompt(lang)}
     Text: ${text.substring(0, 3000)}`,
     config: {
@@ -121,7 +138,7 @@ export const monitorGrammar = async (text: string, lang: Language): Promise<Gram
 export const checkPlagiarism = async (text: string, lang: Language): Promise<PlagiarismResult> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
-    contents: `Check this academic text for originality and plagiarism.
+    contents: `Evaluate the originality of this academic contribution. Identify potential overlaps with existing scholarly literature.
     ${getLangPrompt(lang)}
     Text: ${text.substring(0, 4000)}`,
     config: {
@@ -154,8 +171,7 @@ export const checkPlagiarism = async (text: string, lang: Language): Promise<Pla
 export const identifyDOI = async (query: string): Promise<DOIMetadata> => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Identify the DOI and metadata for this academic reference. 
-    Provide metadata including doi, title, authors, journal, year, and status ('valid' or 'invalid').
+    contents: `Identify the Digital Object Identifier (DOI) and associated metadata for the following bibliographic reference.
     Reference: ${query}`,
     config: {
       responseMimeType: "application/json",
