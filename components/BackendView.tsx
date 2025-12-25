@@ -1,7 +1,13 @@
 
 import React, { useState } from 'react';
+// Fix: Added Language import and interface to support props from App.tsx
+import { Language } from '../types';
 
-const BackendView: React.FC = () => {
+interface Props {
+  lang: Language;
+}
+
+const BackendView: React.FC<Props> = ({ lang }) => {
   const [selectedFile, setSelectedFile] = useState('rss_monitor.py');
 
   const fileContents: Record<string, string> = {

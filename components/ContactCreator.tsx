@@ -1,7 +1,13 @@
 
 import React, { useState } from 'react';
+// Fix: Added Language import and interface to support props from App.tsx
+import { Language } from '../types';
 
-const ContactCreator: React.FC = () => {
+interface Props {
+  lang: Language;
+}
+
+const ContactCreator: React.FC<Props> = ({ lang }) => {
   const [formData, setFormData] = useState({ name: '', subject: '', message: '' });
   const [isSent, setIsSent] = useState(false);
   const [loading, setLoading] = useState(false);

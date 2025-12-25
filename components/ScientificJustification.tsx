@@ -1,7 +1,13 @@
 
 import React, { useState } from 'react';
+// Fix: Added Language import and interface to support props from App.tsx
+import { Language } from '../types';
 
-const ScientificJustification: React.FC = () => {
+interface Props {
+  lang: Language;
+}
+
+const ScientificJustification: React.FC<Props> = ({ lang }) => {
   const [activeTab, setActiveTab] = useState<'justification' | 'architecture' | 'stack' | 'evaluation'>('justification');
 
   return (

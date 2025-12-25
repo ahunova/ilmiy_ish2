@@ -1,8 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { GrantOpportunity } from '../types';
+// Fix: Added Language to imports and interface to support props from App.tsx
+import { GrantOpportunity, Language } from '../types';
 
-const GrantHub: React.FC = () => {
+interface Props {
+  lang: Language;
+}
+
+const GrantHub: React.FC<Props> = ({ lang }) => {
   const [grants, setGrants] = useState<GrantOpportunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
