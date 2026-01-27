@@ -103,8 +103,8 @@ import google.generativeai as genai
 from typing import Dict, List, Any
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-# Fix: Updated model name to gemini-3-pro-preview as gemini-1.5-pro is prohibited
-model = genai.GenerativeModel('gemini-3-pro-preview')
+# Fix: Updated model name to gemini-3-flash-preview as gemini-1.5-pro is prohibited
+model = genai.GenerativeModel('gemini-3-flash-preview')
 
 def process_academic_analysis(text: str) -> Dict[str, Any]:
     """Maqola matnini IMRaD va Grammatik monitoring bo'yicha tahlil qilish."""

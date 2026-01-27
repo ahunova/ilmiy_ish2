@@ -28,7 +28,7 @@ export const getLiveAcademicFeed = async (query: string, lang: Language, categor
       : `Search for UPCOMING scientific conferences, symposiums, and academic events for 2025-2026. EXCLUDE past events. Only return events where the registration or submission deadline is AFTER ${today}.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
+      model: 'gemini-3-flash-preview',
       contents: `${typeInstruction} Target: ${query}. Use real-time search for sources like ilmiyloyiha.uz, mininnovation.uz, and global databases (Nature, Science, ResearchGate, Conference Alerts). 
       IMPORTANT: Only provide information that is current and not outdated.
       ${getLangPrompt(lang)}
@@ -65,7 +65,7 @@ export const getLiveAcademicFeed = async (query: string, lang: Language, categor
 export const searchAcademicMaterials = async (query: string, lang: Language): Promise<{ materials: AcademicMaterial[], synthesis: string }> => {
   return withRetry(async () => {
     const searchResponse = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
+      model: 'gemini-3-flash-preview',
       contents: `Search for high-quality academic papers, articles and theses 2024-2025: ${query}. 
       Return a synthesis of current research trends with citations [1], [2] etc. 
       Also provide a detailed list of materials with DOI or direct URLs. ${getLangPrompt(lang)}`,
@@ -217,7 +217,7 @@ export const checkPlagiarism = async (text: string, lang: Language): Promise<Pla
 export const getArticleAnalytics = async (problem: string, text: string, lang: Language): Promise<ArticleStats> => {
   return withRetry(async () => {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
+      model: 'gemini-3-flash-preview',
       contents: `MART analysis for: ${problem}. Text: ${text}. ${getLangPrompt(lang)}`,
       config: {
         responseMimeType: "application/json",
