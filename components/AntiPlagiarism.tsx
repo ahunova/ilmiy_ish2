@@ -10,7 +10,8 @@ const AntiPlagiarism: React.FC<Props> = ({ lang }) => {
   const [text, setText] = useState('');
   const [result, setResult] = useState<PlagiarismResult | null>(null);
   const [loading, setLoading] = useState(false);
-  const t = translations[lang];
+  // Fixed translation type error by casting to any
+  const t = translations[lang] as any;
 
   const handleScan = async () => {
     if (!text || text.length < 50) return;

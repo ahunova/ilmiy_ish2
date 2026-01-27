@@ -15,12 +15,14 @@ Ushbu loyiha PhD tadqiqotchilari uchun mo'ljallangan intellektual tahlil platfor
    npm install
    ```
 
-3. **API kalitni sozlash:**
-   Loyiha papkasida `.env` nomli fayl yarating va uning ichiga o'z Gemini API kalitingizni quyidagi ko'rinishda yozing:
+3. **API kalitlarni sozlash:**
+   Loyiha papkasida `.env` nomli fayl yarating va uning ichiga quyidagi kalitlarni yozing:
    ```env
-   API_KEY=Sizning_Haqiqiy_API_Kalitingiz
+   API_KEY=Sizning_Gemini_API_Kalitingiz
+   SUPABASE_URL=Sizning_Supabase_Proyekt_URL
+   SUPABASE_ANON_KEY=Sizning_Supabase_Anon_Kalitingiz
    ```
-   *Eslatma: API kalitni [Google AI Studio](https://aistudio.google.com/app/apikey) saytidan bepul olishingiz mumkin.*
+   *Eslatma: Gemini API kalitini [Google AI Studio](https://aistudio.google.com/app/apikey) saytidan olishingiz mumkin.*
 
 4. **Loyihani ishga tushiring:**
    ```bash
@@ -35,3 +37,4 @@ Ushbu loyiha PhD tadqiqotchilari uchun mo'ljallangan intellektual tahlil platfor
 - Akademik uslub va grammatika monitoringi
 - MART (Mantiqiy-Analitik-Raqamli Tahlil) metodologiyasi
 - Grantlar va DOI identifikatsiyasi
+- Hybrid Storage (IndexedDB + Supabase Cloud Sync)

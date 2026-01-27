@@ -66,7 +66,12 @@ export const translations = {
     killSwitch: "Emergency Kill-Switch",
     auditLog: "Xavfsizlik Auditi",
     grantHub: "Grantlar markazi",
-    conferenceNews: "Anjumanlar yangiliklari"
+    conferenceNews: "Anjumanlar yangiliklari",
+    // Added missing keys for AntiPlagiarism
+    textPlaceholder: "Akademik matnni bu yerga joylang (min. 50 ta belgi)...",
+    scanLoading: "Tekshirilmoqda...",
+    originality: "O'ziga xoslik",
+    suggestions: "Tavsiyalar"
   },
   ru: {
     dashboard: "Панель управления",
@@ -81,7 +86,14 @@ export const translations = {
     gameTitle: "Путь Ученого: Симулятор Научных Исследований",
     shieldActive: "Защита Активна",
     grantHub: "Центр грантов",
-    conferenceNews: "Новости конференций"
+    conferenceNews: "Новости конференций",
+    // Added missing keys for AntiPlagiarism
+    antiPlagiarism: "Антиплагиат",
+    analysisStart: "Начать анализ",
+    textPlaceholder: "Вставьте академический текст сюда (мин. 50 символов)...",
+    scanLoading: "Проверка...",
+    originality: "Оригинальность",
+    suggestions: "Предложения"
   },
   en: {
     dashboard: "Dashboard",
@@ -96,6 +108,13 @@ export const translations = {
     gameTitle: "Scholar's Path: Scientific Research Simulator",
     shieldActive: "Shield Active",
     grantHub: "Grant Hub",
-    conferenceNews: "Conference News"
+    conferenceNews: "Conference News",
+    // Added missing keys for AntiPlagiarism
+    antiPlagiarism: "Anti-plagiarism",
+    analysisStart: "Start Analysis",
+    textPlaceholder: "Paste academic text here (min. 50 characters)...",
+    scanLoading: "Scanning...",
+    originality: "Originality",
+    suggestions: "Suggestions"
   }
 };

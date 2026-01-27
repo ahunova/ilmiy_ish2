@@ -3,12 +3,13 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  // Fix: Using '.' instead of process.cwd() to resolve the property 'cwd' does not exist on type 'Process' error
   const env = loadEnv(mode, '.', '');
   return {
     plugins: [react()],
     define: {
-      'process.env.API_KEY': JSON.stringify(env.API_KEY)
+      'process.env.API_KEY': JSON.stringify(env.API_KEY),
+      'process.env.SUPABASE_URL': JSON.stringify(env.SUPABASE_URL || env.REACT_APP_SUPABASE_URL || ''),
+      'process.env.SUPABASE_ANON_KEY': JSON.stringify(env.SUPABASE_ANON_KEY || env.REACT_APP_SUPABASE_PUBLISHABLE_DEFAULT_KEY || '')
     }
   };
 });

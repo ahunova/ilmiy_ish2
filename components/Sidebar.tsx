@@ -23,9 +23,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, onModuleChange, isOpen,
   const mainHubs = [
     { type: ModuleType.DASHBOARD, label: t.dashboard, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg> },
     { type: ModuleType.ACADEMIC_SEARCH, label: lang === 'uz' ? 'Manbalar Qidiruvi' : 'Academic Search', icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg> },
-    { type: ModuleType.ACADEMIC_EVENTS, label: t.academicEvents, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg> },
     { type: ModuleType.UNIFIED_WORKSPACE, label: t.unifiedWorkspace, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM2.25 17.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v.75c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-.75z" /></svg> },
     { type: ModuleType.INTERACTIVE_GAME, label: t.interactiveGame, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38 4.876 4.876 0 01-3.907-1.927 4.876 4.876 0 01-1.108-4.423 5.866 5.866 0 015.85-5.971 4.876 4.876 0 013.908 1.927 4.876 4.876 0 011.107 4.423l-.01.031z" /><path strokeLinecap="round" strokeLinejoin="round" d="M21.21 15.89A6 6 0 1115.48 4.74a4.874 4.874 0 00-1.923 3.91 4.874 4.874 0 004.42 1.106 5.87 5.87 0 013.233 6.134z" /></svg> },
+    { type: ModuleType.CONFERENCE_NEWS, label: t.conferenceNews, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9.348 14.651a3.75 3.75 0 105.304 0 3.75 3.75 0 00-5.304 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg> },
   ];
 
   const tools = [
@@ -33,6 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, onModuleChange, isOpen,
     { type: ModuleType.GRAMMAR_MONITOR, label: t.grammarMonitor, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg> },
     { type: ModuleType.ANTI_PLAGIARISM, label: t.antiPlagiarism, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6.119c-.035.505-.054 1.015-.054 1.531 0 5.223 3.328 9.67 7.977 11.26a11.95 11.95 0 007.977-11.26c0-.516-.019-1.026-.054-1.531A11.959 11.959 0 0112 2.714z" /></svg> },
     { type: ModuleType.DOI_IDENTIFIER, label: t.doiIdentifier, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg> },
+    { type: ModuleType.GRANT_HUB, label: t.grantHub, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75m0 1.5v.75m0 1.5v.75m0 1.5V15m15 0v.75m0 1.5v.75m0 1.5v.75m0 1.5V15m-15-4.5h.75m1.5 0h.75m1.5 0h.75m1.5 0h.75m1.5 0h.75m1.5 0h.75m-1.5 0H3.75m15 0h.75m1.5 0h.75m1.5 0h.75m1.5 0h.75m1.5 0h.75m1.5 0h.75m-1.5 0h.75" /></svg> },
     { type: ModuleType.ANALYTICS, label: t.analytics, icon: <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg> },
   ];
 
@@ -49,7 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, onModuleChange, isOpen,
       )}
 
       <aside className={`fixed lg:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col z-50 transition-transform duration-300 transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full shadow-sm'}`}>
-        <div className="p-6 flex-1 overflow-y-auto custom-scrollbar">
+        <div className="p-6 flex-1 overflow-y-auto custom-scrollbar flex flex-col">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 bg-gradient-to-br from-blue-600 to-indigo-800 rounded-xl flex items-center justify-center text-white text-xl font-black shadow-lg">IT</div>
@@ -58,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, onModuleChange, isOpen,
             <button onClick={onClose} className="lg:hidden p-2 text-slate-400"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg></button>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 flex-1">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 px-4">Asosiy Markazlar</p>
               <nav className="space-y-1">
@@ -92,6 +93,16 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, onModuleChange, isOpen,
                 ))}
               </nav>
             </div>
+          </div>
+          
+          <div className="mt-8 pt-6 border-t border-slate-100">
+             <div className="p-4 bg-slate-50 rounded-2xl flex items-center gap-3">
+                <div className="h-8 w-8 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center text-xs">☁️</div>
+                <div className="flex-1">
+                   <p className="text-[10px] font-black text-slate-900 uppercase">Cloud Sync Active</p>
+                   <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">Hybrid DB Mode</p>
+                </div>
+             </div>
           </div>
         </div>
       </aside>
