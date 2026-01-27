@@ -28,7 +28,7 @@ const DOIIdentifier: React.FC<Props> = ({ lang }) => {
 
   const generateBibTeX = () => {
     if (!metadata) return "";
-    const citeKey = metadata.authors[0]?.split(' ').pop()?.toLowerCase() + metadata.year;
+    const citeKey = (metadata.authors[0]?.split(' ').pop()?.toLowerCase() || 'unknown') + metadata.year;
     return `@article{${citeKey},
   author = {${metadata.authors.join(' and ')}},
   title = {${metadata.title}},

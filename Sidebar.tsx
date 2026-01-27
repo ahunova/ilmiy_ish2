@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { ModuleType, Language } from '../types';
-import { translations } from '../translations';
+import { ModuleType, Language } from './types';
+import { translations } from './translations';
 
 interface SidebarProps {
   activeModule: ModuleType;
