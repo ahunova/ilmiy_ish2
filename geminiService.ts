@@ -28,7 +28,7 @@ export const getLiveAcademicFeed = async (query: string, lang: Language, categor
       : `Search for UPCOMING scientific conferences, symposiums, and academic events for 2025-2026. EXCLUDE past events. Only return events where the registration or submission deadline is AFTER ${today}.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
+      model: 'gemini-2-pro-preview',
       contents: `${typeInstruction} Target: ${query}. Use real-time search for sources like ilmiyloyiha.uz, mininnovation.uz, and global databases (Nature, Science, ResearchGate, Conference Alerts). 
       IMPORTANT: Only provide information that is current and not outdated.
       ${getLangPrompt(lang)}
@@ -65,7 +65,7 @@ export const getLiveAcademicFeed = async (query: string, lang: Language, categor
 export const searchAcademicMaterials = async (query: string, lang: Language): Promise<{ materials: AcademicMaterial[], synthesis: string }> => {
   return withRetry(async () => {
     const searchResponse = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
+      model: 'gemini-2-pro-preview',
       contents: `Search for high-quality academic papers, articles and theses 2024-2025: ${query}. 
       Return a synthesis of current research trends with citations [1], [2] etc. 
       Also provide a detailed list of materials with DOI or direct URLs. ${getLangPrompt(lang)}`,
@@ -73,7 +73,7 @@ export const searchAcademicMaterials = async (query: string, lang: Language): Pr
     });
     const synthesis = searchResponse.text || "";
     const extractionResponse = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2-flash-preview',
       contents: `Extract academic material metadata as JSON from this text: "${synthesis}". 
       Ensure DOI or Link is included for every item.`,
       config: {
@@ -107,7 +107,7 @@ export const searchAcademicMaterials = async (query: string, lang: Language): Pr
 export const analyzeIMRaD = async (text: string, lang: Language): Promise<IMRaDResult[]> => {
   return withRetry(async () => {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2-flash-preview',
       contents: `Analyze IMRaD structure: ${text}. ${getLangPrompt(lang)}`,
       config: {
         responseMimeType: "application/json",
@@ -133,7 +133,7 @@ export const analyzeIMRaD = async (text: string, lang: Language): Promise<IMRaDR
 export const monitorGrammar = async (text: string, lang: Language): Promise<GrammarFix[]> => {
   return withRetry(async () => {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2-flash-preview',
       contents: `Academic grammar monitor: ${text}. ${getLangPrompt(lang)}`,
       config: {
         responseMimeType: "application/json",
@@ -159,7 +159,7 @@ export const monitorGrammar = async (text: string, lang: Language): Promise<Gram
 export const identifyDOI = async (query: string): Promise<DOIMetadata> => {
   return withRetry(async () => {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2-flash-preview',
       contents: `Find DOI metadata for: ${query}.`,
       config: {
         tools: [{ googleSearch: {} }],
@@ -185,7 +185,7 @@ export const identifyDOI = async (query: string): Promise<DOIMetadata> => {
 export const checkPlagiarism = async (text: string, lang: Language): Promise<PlagiarismResult> => {
   return withRetry(async () => {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2-flash-preview',
       contents: `Check plagiarism for: ${text}. ${getLangPrompt(lang)}`,
       config: {
         responseMimeType: "application/json",
@@ -217,7 +217,7 @@ export const checkPlagiarism = async (text: string, lang: Language): Promise<Pla
 export const getArticleAnalytics = async (problem: string, text: string, lang: Language): Promise<ArticleStats> => {
   return withRetry(async () => {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
+      model: 'gemini-2-pro-preview',
       contents: `MART analysis for: ${problem}. Text: ${text}. ${getLangPrompt(lang)}`,
       config: {
         responseMimeType: "application/json",
