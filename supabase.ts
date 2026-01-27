@@ -1,9 +1,8 @@
-
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.1';
+import { createClient } from "@supabase/supabase-js";
 
 // Environment variables are injected via vite.config.ts
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || '';
+const supabaseKey = process.env.REACT_APP_SUPABASE_PUBLISHABLE_DEFAULT_KEY || '';
 
 /**
  * Supabase client initialization.

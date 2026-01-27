@@ -108,7 +108,7 @@ export class ResearchDB {
   async getFavorites() {
     try {
       const { data } = await supabase.from('favorites').select('*');
-      if (data) return data.map(d => d.data);
+      if (data) return data.map((d: { data: any; }) => d.data);
     } catch (e) {}
 
     const db = await this.openDB();
