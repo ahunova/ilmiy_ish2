@@ -1,5 +1,9 @@
 {
-  "name": "Ilmiy Ma'lumotlar taxlili",
-  "description": "PhD tadqiqotchilari uchun vizual va intellektual tahlil platformasi. IMRaD analitika va O'zbekiston grantlari monitoringi.",
-  "requestFramePermissions": []
+  "name": "Intellektual Taxlil Pro",
+  "description": "PhD researchers platform with Vision AI, Roadmap generation and Academic Export functionality.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "orientation": "portrait"
 }

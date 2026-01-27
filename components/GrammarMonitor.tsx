@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { monitorGrammar } from '../geminiService';
 import { GrammarFix, Language } from '../types';
 
@@ -7,19 +7,31 @@ interface Props {
   lang: Language;
 }
 
-// Fix: Added lang prop to GrammarMonitor component to handle academic style monitoring
 const GrammarMonitor: React.FC<Props> = ({ lang }) => {
   const [text, setText] = useState('');
   const [fixes, setFixes] = useState<GrammarFix[]>([]);
   const [loading, setLoading] = useState(false);
+  const [lastChecked, setLastChecked] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedText = localStorage.getItem('grammar_text_current');
+    const savedFixes = localStorage.getItem('grammar_fixes_current');
+    if (savedText) setText(savedText);
+    if (savedFixes) setFixes(JSON.parse(savedFixes));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('grammar_text_current', text);
+  }, [text]);
 
   const handleCheck = async () => {
     if (!text) return;
     setLoading(true);
     try {
-      // Fix: Passed lang argument to monitorGrammar (fixes Expected 2 arguments error)
       const res = await monitorGrammar(text, lang);
       setFixes(res);
+      setLastChecked(new Date().toLocaleTimeString());
+      localStorage.setItem('grammar_fixes_current', JSON.stringify(res));
     } catch (e) {
       console.error(e);
     } finally {
@@ -39,12 +51,20 @@ const GrammarMonitor: React.FC<Props> = ({ lang }) => {
   return (
     <div className="space-y-6">
       <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
-        <h2 className="text-2xl font-bold mb-4 text-slate-800">Akademik Grammatik Monitoring</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-slate-800">Akademik Grammatik Monitoring</h2>
+          <div className="flex items-center gap-4">
+            {lastChecked && (
+              <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Saqlandi: {lastChecked}</span>
+            )}
+            <button onClick={() => {setText(''); setFixes([]); localStorage.removeItem('grammar_text_current'); localStorage.removeItem('grammar_fixes_current');}} className="text-[10px] font-black text-red-400 uppercase tracking-widest">Tozalash</button>
+          </div>
+        </div>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Tahrir talab qiladigan akademik matnni bu yerga kiriting..."
-          className="w-full h-64 p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all resize-none font-serif text-lg leading-relaxed"
+          className="w-full h-64 p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all resize-none font-serif text-lg leading-relaxed shadow-inner"
         />
         <button
           onClick={handleCheck}
@@ -56,7 +76,7 @@ const GrammarMonitor: React.FC<Props> = ({ lang }) => {
       </div>
 
       {fixes.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-in fade-in duration-500">
           <h3 className="text-xl font-bold text-slate-800">Aniqlangan tahrirlar ({fixes.length})</h3>
           {fixes.map((fix, i) => (
             <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row gap-6">

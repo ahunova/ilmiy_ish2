@@ -1,167 +1,132 @@
 
 import React, { useState, useEffect } from 'react';
-// Fix: Added Language to imports and interface to support props from App.tsx
-import { GrantOpportunity, Language } from '../types';
+import { Language } from '../types';
+import { getLiveAcademicFeed } from '../geminiService';
 
-interface Props {
-  lang: Language;
-}
+interface Props { lang: Language; }
 
 const GrantHub: React.FC<Props> = ({ lang }) => {
-  const [grants, setGrants] = useState<GrantOpportunity[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<any[]>([]);
+  const [activeCategory, setActiveCategory] = useState('Barchasi');
+
+  const categories = [
+    { id: 'Barchasi', label: 'Barchasi' },
+    { id: 'Uzbekistan', label: 'Milliy loyihalar' },
+    { id: 'STEM', label: 'Aniq fanlar' },
+    { id: 'Medicine', label: 'Tibbiyot' },
+    { id: 'IT', label: 'IT & AI' },
+    { id: 'Social', label: 'Ijtimoiy-gumanitar' },
+    { id: 'Agriculture', label: 'Qishloq xo\'jaligi' },
+    { id: 'Humanities', label: 'Gumanitar & Filologiya' }
+  ];
 
   useEffect(() => {
-    const fetchGrants = async () => {
-      setLoading(true);
-      // Simulating fetch - focusing on Uzbekistan local grants + International
-      setTimeout(() => {
-        const mockGrants: GrantOpportunity[] = [
-          {
-            id: 'uz-1',
-            title: 'Yosh olimlar uchun fundamental va amaliy tadqiqotlar loyihasi (2025)',
-            agency: 'Innovatsion rivojlanish agentligi',
-            deadline: '2025-02-15',
-            amount: '600,000,000 UZS',
-            link: 'https://mininnovation.uz/',
-            description: 'PhD va tayanch doktorantlar uchun mo\'ljallangan davlat ilmiy dasturlari doirasidagi tanlov.'
-          },
-          {
-            id: 'uz-2',
-            title: '"Olimpa" ilmiy-innovatsion loyihalar tanlovi',
-            agency: 'Yoshlar Akademiyasi',
-            deadline: '2024-12-30',
-            amount: '100,000,000 UZS',
-            link: 'https://yoshlarakademiyasi.uz/',
-            description: 'Iqtidorli yoshlar va PhD tadqiqotchilarning startap va ilmiy ishlanmalarini moliyalashtirish.'
-          },
-          {
-            id: 'uz-3',
-            title: 'Doktorantlar uchun xorijiy ilmiy stajirovka dasturi',
-            agency: "El-yurt umidi jamg'armasi",
-            deadline: '2025-03-20',
-            amount: 'To\'liq qoplanadi',
-            link: 'https://eyuf.uz/',
-            description: 'PhD tadqiqotchilarining nufuzli xorijiy universitetlarda 3-6 oylik malaka oshirishini qo\'llab-quvvatlash.'
-          },
-          {
-            id: 'uz-4',
-            title: 'Ayol olimlar va tadqiqotchilar uchun "Innovatsion g\'oyalar" granti',
-            agency: 'Oila va xotin-qizlar qo\'mitasi',
-            deadline: '2025-01-10',
-            amount: '250,000,000 UZS',
-            link: '#',
-            description: 'Ilm-fan sohasidagi xotin-qizlarning ilmiy salohiyatini oshirishga qaratilgan maqsadli grant.'
-          },
-          {
-            id: 'intl-1',
-            title: 'Horizon Europe: Cluster 2 (Culture, Creativity and Inclusive Society)',
-            agency: 'Yevropa Ittifoqi',
-            deadline: '2024-12-15',
-            amount: '€2,500,000',
-            link: '#',
-            description: 'Ijtimoiy-gumanitar sohadagi PhD tadqiqotchilar uchun xalqaro konsorsium loyihalari.'
-          },
-          {
-            id: 'intl-2',
-            title: 'Fulbright Visiting Scholar Program',
-            agency: 'AQSH Elchixonasi',
-            deadline: '2025-01-10',
-            amount: 'Full Fund',
-            link: '#',
-            description: 'AQSHning nufuzli tadqiqot markazlarida 9 oygacha bo\'lgan ilmiy izlanishlar uchun.'
-          }
-        ];
-        setGrants(mockGrants);
-        setLoading(false);
-      }, 800);
+    fetchNewGrants();
+  }, [activeCategory, lang]);
+
+  const fetchNewGrants = async () => {
+    setLoading(true);
+    try {
+      let query = activeCategory === 'Barchasi' ? 'upcoming research grants and funding calls 2025 2026' : `${activeCategory} upcoming research funding opportunities 2025`;
+      if (activeCategory === 'Uzbekistan') query = 'yangi ilmiy loyihalar va grantlar tanlovi 2025 ilmiyloyiha.uz';
+      
+      const res = await getLiveAcademicFeed(query, lang, 'grant');
+      setItems(res.items || []);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getThematicImage = (i: number, field?: string) => {
+    const images: Record<string, string[]> = {
+      'STEM': ["https://images.unsplash.com/photo-1532094349884-543bc11b234d", "https://images.unsplash.com/photo-1507413245164-6160d8298b31"],
+      'IT': ["https://images.unsplash.com/photo-1550751827-4bd374c3f58b", "https://images.unsplash.com/photo-1518770660439-4636190af475"],
+      'Medicine': ["https://images.unsplash.com/photo-1576091160550-2173dba999ef", "https://images.unsplash.com/photo-1530026405186-ed1f139313f8"],
+      'Uzbekistan': ["https://images.unsplash.com/photo-1628102421443-41a6684617be", "https://images.unsplash.com/photo-1528642463366-427f8c14031d"],
+      'Social': ["https://images.unsplash.com/photo-1454165833767-027ffea9e778", "https://images.unsplash.com/photo-1516321497487-e288fb19713f"],
+      'Humanities': ["https://images.unsplash.com/photo-1455390582262-044cdead277a", "https://images.unsplash.com/photo-1491841573634-28140fc7ced7"]
     };
-
-    fetchGrants();
-  }, []);
-
-  const filteredGrants = filter === 'all' 
-    ? grants 
-    : grants.filter(g => g.agency.toLowerCase().includes(filter.toLowerCase()) || g.title.toLowerCase().includes(filter.toLowerCase()));
+    const pool = images[field || 'Social'] || images['Social'];
+    return `${pool[i % pool.length]}?q=80&w=800&auto=format&fit=crop`;
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
+    <div className="space-y-12 animate-in fade-in duration-700 pb-24">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h2 className="text-3xl font-bold text-slate-800 serif mb-1">Grantlar va Tanlovlar Monitoringi</h2>
-          <p className="text-slate-500 text-sm">O'zbekiston va xalqaro miqyosdagi PhD imkoniyatlari</p>
+          <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">Grantlar va Loyihalar Oqimi</h2>
+          <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-2 flex items-center gap-2">
+            <span className="h-2 w-2 bg-[#0085FF] rounded-full animate-pulse"></span>
+            Yangi Ilmiy Grantlar 2025-2026 (Live)
+          </p>
         </div>
-        <div className="mt-4 md:mt-0 flex items-center gap-3 bg-blue-50 px-4 py-2 rounded-2xl border border-blue-100">
-           <span className="text-xs font-bold text-blue-600 uppercase tracking-widest flex items-center gap-2">
-             <span className="h-2 w-2 bg-emerald-500 rounded-full animate-pulse"></span>
-             Mahalliy va Xalqaro yangiliklar
-           </span>
+        <div className="flex gap-2 bg-white p-2 rounded-[2.5rem] border border-slate-100 shadow-xl overflow-x-auto max-w-full no-scrollbar">
+          {categories.map(cat => (
+            <button 
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === cat.id ? 'bg-[#0085FF] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mb-2">
-        {['all', 'Innovatsion', 'Yoshlar', 'El-yurt', 'AQSH', 'Europe'].map(cat => (
-          <button
-            key={cat}
-            onClick={() => setFilter(cat === 'all' ? 'all' : cat)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-              (filter === cat) || (cat === 'all' && filter === 'all')
-              ? 'bg-slate-900 text-white border-slate-900 shadow-lg' 
-              : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'
-            }`}
-          >
-            {cat === 'all' ? 'Barcha Grantlar' : cat}
-          </button>
-        ))}
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center p-32 space-y-4">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-slate-200 border-t-blue-600"></div>
-          <p className="text-slate-400 font-medium animate-pulse">Ma'lumotlar yangilanmoqda...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[1,2,3,4].map(i => (
+            <div key={i} className="bg-white h-[450px] rounded-[3rem] border border-slate-100 animate-pulse shadow-sm"></div>
+          ))}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
-          {filteredGrants.map((grant) => (
-            <div key={grant.id} className="bg-white flex flex-col p-8 rounded-[2rem] shadow-sm border border-slate-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/5 transition-all group relative overflow-hidden">
-              <div className="flex justify-between items-start mb-6">
-                <span className={`text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-widest ${grant.id.startsWith('uz') ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
-                  {grant.agency}
-                </span>
-                <div className="flex flex-col items-end">
-                  <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-0.5">Muddat</span>
-                  <span className="text-slate-900 text-xs font-bold">{grant.deadline}</span>
+      ) : items.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {items.map((item, i) => (
+            <div key={i} className="bg-white rounded-[3rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all group flex flex-col h-full">
+              <div className="relative h-56 overflow-hidden shrink-0">
+                <img src={getThematicImage(i, item.field)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Grant" />
+                <div className="absolute top-0 left-0 bg-[#0085FF] text-white px-5 py-2 font-black text-xs rounded-br-[1.5rem] shadow-xl z-10">
+                  #{item.id || 124 - i}
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
               </div>
-              
-              <h3 className="font-bold text-lg text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight min-h-[3rem]">{grant.title}</h3>
-              <p className="text-sm text-slate-500 mb-8 line-clamp-3 leading-relaxed">{grant.description}</p>
-              
-              <div className="mt-auto pt-6 border-t border-slate-100 flex justify-between items-center">
-                <div className="flex flex-col">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Budjet</span>
-                  <span className="font-bold text-slate-900 text-lg">{grant.amount}</span>
+
+              <div className="p-8 flex-1 flex flex-col justify-between space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-black text-slate-900 leading-tight group-hover:text-[#0085FF] transition-colors">
+                    {item.title}
+                  </h3>
+                  <div className="inline-block px-4 py-1.5 bg-[#E8F5FF] text-[#0085FF] rounded-full text-[10px] font-black uppercase tracking-tight">
+                    {item.type || 'Grant/Loyiha'}
+                  </div>
                 </div>
-                <a href={grant.link} target="_blank" rel="noopener noreferrer" className="bg-slate-900 text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-blue-600 hover:shadow-lg transition-all">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
+
+                <div className="flex items-center justify-between pt-6 border-t border-slate-50">
+                   <div className={`px-4 py-2 rounded-full flex items-center gap-2 ${i % 3 === 0 ? 'bg-red-50 text-red-500' : 'bg-[#F0FFF4] text-[#22C55E]'}`}>
+                      <span className="text-[9px] font-black uppercase tracking-tight whitespace-nowrap">
+                        Muddat: {item.deadline}
+                      </span>
+                   </div>
+                   <a href={item.link} target="_blank" rel="noopener noreferrer" className="h-12 w-12 bg-[#E8F5FF] rounded-full flex items-center justify-center text-[#0085FF] hover:bg-[#0085FF] hover:text-white transition-all shadow-md group/btn">
+                    <svg className="w-6 h-6 transform transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                   </a>
+                </div>
               </div>
             </div>
           ))}
         </div>
-      )}
-      
-      <div className="bg-slate-900 p-8 rounded-[2.5rem] text-white flex flex-col md:flex-row items-center gap-8 border border-slate-800">
-        <div className="h-16 w-16 bg-emerald-600 rounded-2xl flex items-center justify-center text-3xl shadow-xl shadow-emerald-500/20 shrink-0">🏛️</div>
-        <div className="flex-1 text-center md:text-left">
-          <h4 className="text-xl font-bold mb-2">Mahalliy ilmiy ekotizim bilan integratsiya</h4>
-          <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
-            Tizim O'zbekistonning "Innovatsion rivojlanish agentligi" va boshqa davlat ilmiy tashkilotlari e'lon qiladigan 
-            PhD darajasidagi barcha grantlarni real-vaqt rejimida kuzatib boradi va sizga bildirishnomalar yuboradi.
-          </p>
+      ) : (
+        <div className="bg-slate-50 p-24 rounded-[4rem] text-center border border-dashed border-slate-200">
+           <div className="text-6xl mb-6 opacity-20">📡</div>
+           <p className="text-slate-400 text-lg italic">Grantlar topilmadi yoki barchasining muddati o'tgan. Qidiruv yo'nalishini o'zgartirib ko'ring.</p>
+           <button onClick={fetchNewGrants} className="mt-4 text-blue-600 font-black uppercase text-xs tracking-widest">Qaytadan yuklash 🔄</button>
         </div>
-      </div>
+      )}
     </div>
   );
 };
