@@ -3,7 +3,7 @@ import React from 'react';
 import { ModuleType, Language } from '../types';
 import { translations } from '../translations';
 
-const EDTECH_URL = 'https://edtech-clone.vercel.app';
+const EDTECH_URL = 'https://ed-tech-clone-sigma.vercel.app';
 
 interface SidebarProps {
   activeModule: ModuleType;
