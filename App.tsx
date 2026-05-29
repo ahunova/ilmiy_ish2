@@ -73,8 +73,6 @@ const App: React.FC = () => {
       case ModuleType.CONTACT_CREATOR: return <ContactCreator lang={lang} />;
       case ModuleType.ANTI_PLAGIARISM: return <AntiPlagiarism lang={lang} />;
       case ModuleType.ACADEMIC_SEARCH: return <AcademicSearch lang={lang} />;
-      // Barcha tadbirlar (Grant va Konferensiya) yagona Hubga yo'naltiriladi
-      case ModuleType.GRANT_HUB:
       case ModuleType.CONFERENCE_NEWS:
         return <AcademicEventsHub lang={lang} />;
       default: return <Dashboard onNavigate={handleModuleChange} lang={lang} />;

@@ -65,7 +65,7 @@ export const translations = {
     integrityVerified: "Yaxlitlik Tasdiqlangan",
     killSwitch: "Emergency Kill-Switch",
     auditLog: "Xavfsizlik Auditi",
-    grantHub: "Grantlar markazi",
+    grantHub: "Raqamli resurslar",
     conferenceNews: "Anjumanlar yangiliklari",
     // Added missing keys for AntiPlagiarism
     textPlaceholder: "Akademik matnni bu yerga joylang (min. 50 ta belgi)...",
@@ -85,7 +85,7 @@ export const translations = {
     dataPurge: "Очистить все данные сессии",
     gameTitle: "Путь Ученого: Симулятор Научных Исследований",
     shieldActive: "Защита Активна",
-    grantHub: "Центр грантов",
+    grantHub: "Цифровые ресурсы",
     conferenceNews: "Новости конференций",
     // Added missing keys for AntiPlagiarism
     antiPlagiarism: "Антиплагиат",
@@ -107,7 +107,7 @@ export const translations = {
     dataPurge: "Purge Session Data",
     gameTitle: "Scholar's Path: Scientific Research Simulator",
     shieldActive: "Shield Active",
-    grantHub: "Grant Hub",
+    grantHub: "Digital Resources",
     conferenceNews: "Conference News",
     // Added missing keys for AntiPlagiarism
     antiPlagiarism: "Anti-plagiarism",
