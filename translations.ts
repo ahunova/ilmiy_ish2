@@ -19,7 +19,7 @@ export const translations = {
     admin: "Administrator",
     phdCandidate: "PhD Tadqiqotchi",
     analysisStart: "Tahlilni boshlash",
-    heroTitle: "Global Ilmiy Ma'lumotlar Taxlili",
+    heroTitle: "Global ilmiy ma'lumotlar taxlili",
     securityTitle: "Ma'lumotlar va Maxfiylik Himoyasi",
     encryptionStatus: "Shifrlash holati",
     activeEncryption: "AES-256 SSL Himoyasi faol",
